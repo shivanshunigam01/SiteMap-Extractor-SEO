@@ -178,13 +178,13 @@ ${urls
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#FFB100] via-[#FFB100] to-[#FFB100] flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#FFB100] via-[#FFB100] to-[#FFB100] flex flex-col items-center justify-start pt-32 px-6">
       <div className="w-full max-w-2xl text-center mb-12">
-        {/* Main Title */}
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight"></h1>
+        {/* Main Title
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight"></h1> */}
 
         {/* Subtitle */}
-        <p className="text-xl text-gray-800 font-medium mb-12"></p>
+        {/* <p className="text-xl text-gray-800 font-medium mb-12"></p> */}
 
         {/* Input and Button Section */}
         <div className="space-y-6">
