@@ -106,7 +106,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFB100] via-[#FFB100] to-[#FFB100] px-4 py-20">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#FFB100] via-[#FFB100] to-[#FFB100] flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-2xl text-center mb-12">
         {/* Main Title */}
         <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
