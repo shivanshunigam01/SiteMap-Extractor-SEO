@@ -1,10 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Download, Loader2, Rocket } from "lucide-react";
+import { Download, Loader2, Rocket, Copy, FileCode } from "lucide-react";
 
 const Index = () => {
   const [sitemapUrl, setSitemapUrl] = useState("");
@@ -72,6 +73,72 @@ const Index = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const copyUrlsToClipboard = async () => {
+    if (!extractedUrls.trim()) {
+      toast({
+        title: "No URLs to copy",
+        description: "Please extract URLs first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(extractedUrls);
+      toast({
+        title: "URLs copied!",
+        description: "All URLs have been copied to your clipboard",
+      });
+    } catch (error) {
+      console.error("Failed to copy URLs:", error);
+      toast({
+        title: "Copy failed",
+        description: "Failed to copy URLs to clipboard",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const convertToXmlSitemap = () => {
+    if (!extractedUrls.trim()) {
+      toast({
+        title: "No URLs to convert",
+        description: "Please extract URLs first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const urls = extractedUrls.split("\n").filter((url) => url.trim());
+    
+    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(url => `  <url>
+    <loc>${url.trim()}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+    const blob = new Blob([xmlContent], { type: "application/xml;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", "sitemap.xml");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({
+      title: "XML Sitemap created!",
+      description: "Sitemap.xml file has been downloaded",
+    });
   };
 
   const exportToCSV = () => {
@@ -159,14 +226,32 @@ const Index = () => {
                 <h2 className="text-2xl font-bold text-gray-900">
                   Extracted URLs
                 </h2>
-                <Button
-                  onClick={exportToCSV}
-                  variant="outline"
-                  className="h-12 bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-yellow-300 px-6 font-semibold rounded-xl shadow-sm transition-all duration-200"
-                >
-                  <Download className="w-5 h-5 mr-2" />
-                  Export CSV
-                </Button>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={copyUrlsToClipboard}
+                    variant="outline"
+                    className="h-12 bg-white border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 px-6 font-semibold rounded-xl shadow-sm transition-all duration-200"
+                  >
+                    <Copy className="w-5 h-5 mr-2" />
+                    Copy URLs
+                  </Button>
+                  <Button
+                    onClick={convertToXmlSitemap}
+                    variant="outline"
+                    className="h-12 bg-white border-2 border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 px-6 font-semibold rounded-xl shadow-sm transition-all duration-200"
+                  >
+                    <FileCode className="w-5 h-5 mr-2" />
+                    Convert to XML
+                  </Button>
+                  <Button
+                    onClick={exportToCSV}
+                    variant="outline"
+                    className="h-12 bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-yellow-300 px-6 font-semibold rounded-xl shadow-sm transition-all duration-200"
+                  >
+                    <Download className="w-5 h-5 mr-2" />
+                    Export CSV
+                  </Button>
+                </div>
               </div>
 
               <Textarea
