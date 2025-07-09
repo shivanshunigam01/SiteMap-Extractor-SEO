@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -112,18 +111,24 @@ const Index = () => {
     }
 
     const urls = extractedUrls.split("\n").filter((url) => url.trim());
-    
+
     const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(url => `  <url>
+${urls
+  .map(
+    (url) => `  <url>
     <loc>${url.trim()}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>`).join('\n')}
+  </url>`
+  )
+  .join("\n")}
 </urlset>`;
 
-    const blob = new Blob([xmlContent], { type: "application/xml;charset=utf-8;" });
+    const blob = new Blob([xmlContent], {
+      type: "application/xml;charset=utf-8;",
+    });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
 
@@ -176,14 +181,10 @@ ${urls.map(url => `  <url>
     <div className="min-h-screen w-full bg-gradient-to-br from-[#FFB100] via-[#FFB100] to-[#FFB100] flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-2xl text-center mb-12">
         {/* Main Title */}
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-          Extract URLs Now
-        </h1>
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight"></h1>
 
         {/* Subtitle */}
-        <p className="text-xl text-gray-800 font-medium mb-12">
-          Extract and analyze URLs from XML sitemaps instantly.
-        </p>
+        <p className="text-xl text-gray-800 font-medium mb-12"></p>
 
         {/* Input and Button Section */}
         <div className="space-y-6">
