@@ -37,7 +37,7 @@ const Index = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/extract-sitemap-urls",
+        "https://llms-backend-1.onrender.com/extract-sitemap-urls",
         {
           method: "POST",
           headers: {
