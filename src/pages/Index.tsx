@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Download, Loader2, Link2, FileText, Sparkles } from 'lucide-react';
+import { Download, Loader2, Rocket } from 'lucide-react';
 
 const Index = () => {
   const [sitemapUrl, setSitemapUrl] = useState('');
@@ -114,116 +114,79 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-amber-400 via-yellow-400 to-orange-400 flex items-center justify-center p-6">
-      <div className="w-full max-w-4xl">
-        <Card className="bg-white/95 backdrop-blur-sm shadow-2xl border-0 transition-all duration-300 hover:shadow-3xl">
-          <CardContent className="p-10 space-y-10">
-            {/* Header with enhanced styling */}
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center mb-4">
-                <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-3 rounded-full">
-                  <FileText className="w-8 h-8 text-white" />
-                </div>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-900 to-blue-900 bg-clip-text text-transparent leading-tight">
-                Free XML Sitemap URL Extractor
-              </h1>
-              <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed">
-                Extract and analyze URLs from XML sitemaps with our powerful, easy-to-use tool
-              </p>
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                <Sparkles className="w-4 h-4" />
-                <span>Fast • Reliable • Free Forever</span>
-                <Sparkles className="w-4 h-4" />
-              </div>
-            </div>
+    <div className="min-h-screen w-full bg-gradient-to-br from-amber-400 via-yellow-400 to-orange-400 flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-2xl text-center mb-12">
+        {/* Main Title */}
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+          Extract URLs Now
+        </h1>
+        
+        {/* Subtitle */}
+        <p className="text-xl text-gray-800 font-medium mb-12">
+          Extract and analyze URLs from XML sitemaps instantly.
+        </p>
 
-            {/* Enhanced Input Section */}
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <label htmlFor="sitemap-url" className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                  <Link2 className="w-5 h-5 text-purple-600" />
-                  XML Sitemap URL
-                </label>
-                <div className="flex gap-4">
-                  <div className="flex-1 relative">
-                    <Input
-                      id="sitemap-url"
-                      type="url"
-                      placeholder="https://example.com/sitemap.xml"
-                      value={sitemapUrl}
-                      onChange={(e) => setSitemapUrl(e.target.value)}
-                      className="h-14 text-lg border-2 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20 focus:ring-4 transition-all duration-200 pl-4 pr-4 rounded-xl shadow-sm"
-                    />
-                  </div>
-                  <Button
-                    onClick={extractUrlsFromSitemap}
-                    disabled={isLoading}
-                    className="h-14 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:transform-none"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-                        Extracting...
-                      </>
-                    ) : (
-                      <>
-                        <FileText className="w-5 h-5 mr-3" />
-                        Extract URLs
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </div>
+        {/* Input and Button Section */}
+        <div className="space-y-6">
+          <div className="relative">
+            <Input
+              type="url"
+              placeholder="Enter your sitemap URL..."
+              value={sitemapUrl}
+              onChange={(e) => setSitemapUrl(e.target.value)}
+              className="h-16 text-lg px-6 rounded-2xl border-0 shadow-lg bg-white/90 backdrop-blur-sm placeholder:text-gray-500 focus:ring-4 focus:ring-white/30 transition-all duration-200"
+            />
+          </div>
 
-            {/* Enhanced Results Section */}
-            <div className="space-y-6">
+          <Button
+            onClick={extractUrlsFromSitemap}
+            disabled={isLoading}
+            className="h-16 bg-gray-900 hover:bg-gray-800 text-white px-12 font-semibold text-lg rounded-2xl shadow-lg transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:opacity-50"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-3 animate-spin" />
+                Extracting...
+              </>
+            ) : (
+              <>
+                <Rocket className="w-5 h-5 mr-3" />
+                Extract Now
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Results Section - Only show when there are results */}
+      {extractedUrls && (
+        <div className="w-full max-w-4xl">
+          <Card className="bg-white/95 backdrop-blur-sm shadow-2xl border-0 rounded-3xl overflow-hidden">
+            <CardContent className="p-8 space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                  <div className="w-2 h-8 bg-gradient-to-b from-purple-600 to-blue-600 rounded-full"></div>
+                <h2 className="text-2xl font-bold text-gray-900">
                   Extracted URLs
                 </h2>
                 <Button
                   onClick={exportToCSV}
                   variant="outline"
-                  className="h-12 bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 px-6 font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105"
-                  disabled={!extractedUrls.trim()}
+                  className="h-12 bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 px-6 font-semibold rounded-xl shadow-sm transition-all duration-200"
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Export CSV
                 </Button>
               </div>
               
-              <div className="relative">
-                <Textarea
-                  placeholder="Your extracted URLs will appear here..."
-                  value={extractedUrls}
-                  onChange={(e) => setExtractedUrls(e.target.value)}
-                  className="min-h-[350px] border-2 border-gray-200 focus:border-purple-500 focus:ring-purple-500/20 focus:ring-4 font-mono text-sm leading-relaxed p-6 rounded-xl shadow-sm transition-all duration-200 resize-none"
-                  readOnly={false}
-                />
-                {!extractedUrls && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="text-center text-gray-400">
-                      <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                      <p className="text-lg font-medium">Ready to extract URLs</p>
-                      <p className="text-sm">Enter a sitemap URL above to get started</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Footer with subtle branding */}
-            <div className="text-center pt-6 border-t border-gray-100">
-              <p className="text-gray-500 text-sm">
-                Built with ❤️ for developers and SEO professionals
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              <Textarea
+                value={extractedUrls}
+                onChange={(e) => setExtractedUrls(e.target.value)}
+                className="min-h-[300px] border-2 border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-gray-200 font-mono text-sm leading-relaxed p-6 rounded-xl shadow-sm transition-all duration-200 resize-none bg-gray-50"
+                placeholder="Your extracted URLs will appear here..."
+              />
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
